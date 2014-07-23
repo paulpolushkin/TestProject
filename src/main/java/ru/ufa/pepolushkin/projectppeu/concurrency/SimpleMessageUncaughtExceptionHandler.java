@@ -15,8 +15,8 @@ import org.apache.commons.lang3.ArrayUtils;
 public class SimpleMessageUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
 
     /**
-     * Глубина стека, на которую следует спускаться
-     * при выборке сообщений из {@code StackTraceElement}
+     * Количество элементов стека, которые следует выводить
+     * пользователю @see StackTraceElement
      * default {@code level = 5}
      */
     protected int level = 5;
@@ -34,7 +34,7 @@ public class SimpleMessageUncaughtExceptionHandler implements Thread.UncaughtExc
     
     /**
      * Конструктор с параметром
-     * @param level устанавливает глубину стека, на которую следует спускаться
+     * @param level устанавливает сколько элементов стека выводить
      * при выборке сообщений из {@code StackTraceElement}
      */
     public SimpleMessageUncaughtExceptionHandler(int level) {
@@ -51,7 +51,7 @@ public class SimpleMessageUncaughtExceptionHandler implements Thread.UncaughtExc
     
     /**
      * Конструктор с параметрами
-     * @param level устанавливает глубину стека, на которую следует спускаться
+     * @param level устанавливает сколько элементов стека выводить
      * при выборке сообщений из {@code StackTraceElement}
      * @param ps - устанавливает стрим для вывода сообщений пользователю
      */
@@ -76,14 +76,34 @@ public class SimpleMessageUncaughtExceptionHandler implements Thread.UncaughtExc
      */
     private void getMessage(Throwable e) {
         if(ArrayUtils.isEmpty(e.getStackTrace())) {
+            /*
+            Если стектрайс пуст, то выводим стектрейс исключения-причины
+            */
+            getCause(e);
             return;
         }
-        StackTraceElement ste = e.getStackTrace()[0];
-        ps.println("Class: " + ste.getFileName() + ", Method: " + ste.getMethodName() + ", Line: " + ste.getLineNumber());
+        /*
+        Выводим ровно столько элементов стектрейса, сколько указано в #level
+        */
+        StackTraceElement ste;
+        for(int i = 0; i < level; i++) {
+            ste = e.getStackTrace()[i];
+            if(ste == null)
+                break;
+            ps.println("Class: " + ste.getFileName() + ", Method: " + ste.getMethodName() + ", Line: " + ste.getLineNumber());
+        }
+        /*
+        Выводим данные исключения, которое стало причиной возникновения текущего (если есть)
+        Метод #getCause(Throwable) может снова вызвать #getMessage(Throwable)
+        */
+        getCause(e);
+    }
+    
+    private void getCause(Throwable e) {
         if(e.getCause() != null) {
             ps.print("Cause: ");
             getMessage(e.getCause());
         }
-   }
+    }
     
 }
