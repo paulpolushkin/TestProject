@@ -9,7 +9,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * @author Pavel Polushkin
- * @since 1.0
+ * @since 23.07.2014 (1.0)
  * @version 23.07.2014
  */
 public class SimpleMessageUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler {
@@ -20,18 +20,18 @@ public class SimpleMessageUncaughtExceptionHandler implements Thread.UncaughtExc
      * default {@code level = 5}
      */
     protected int level = 5;
-    
+
     /**
      * Стрим вывода сообщений
      * default {@code ps = System.out)
      */
     protected PrintStream ps = System.out;
-    
+
     /**
      * Конструктор по умолчанию
      */
     public SimpleMessageUncaughtExceptionHandler() {}
-    
+
     /**
      * Конструктор с параметром
      * @param level устанавливает сколько элементов стека выводить
@@ -40,7 +40,7 @@ public class SimpleMessageUncaughtExceptionHandler implements Thread.UncaughtExc
     public SimpleMessageUncaughtExceptionHandler(int level) {
         this.level = level;
     }
-    
+
     /**
      * Конструктор с параметром
      * @param ps устанавливает стрим для вывода сообщений пользователю
@@ -48,7 +48,7 @@ public class SimpleMessageUncaughtExceptionHandler implements Thread.UncaughtExc
     public SimpleMessageUncaughtExceptionHandler(PrintStream ps) {
         this.ps = ps;
     }
-    
+
     /**
      * Конструктор с параметрами
      * @param level устанавливает сколько элементов стека выводить
@@ -59,7 +59,7 @@ public class SimpleMessageUncaughtExceptionHandler implements Thread.UncaughtExc
         this.level = level;
         this.ps = ps;
     }
-    
+
     /**
      * Действие при выбросе потоком исключения
      * @param t поток выбросивший исключение
@@ -69,10 +69,10 @@ public class SimpleMessageUncaughtExceptionHandler implements Thread.UncaughtExc
         ps.println(t.getName() + " - " + e.getClass());
         getMessage(e);
     }
-                
+
     /**
      * Рекурсивный метод
-     * @param e 
+     * @param e
      */
     private void getMessage(Throwable e) {
         if(ArrayUtils.isEmpty(e.getStackTrace())) {
@@ -98,12 +98,12 @@ public class SimpleMessageUncaughtExceptionHandler implements Thread.UncaughtExc
         */
         getCause(e);
     }
-    
+
     private void getCause(Throwable e) {
         if(e.getCause() != null) {
             ps.print("Cause: ");
             getMessage(e.getCause());
         }
     }
-    
+
 }
