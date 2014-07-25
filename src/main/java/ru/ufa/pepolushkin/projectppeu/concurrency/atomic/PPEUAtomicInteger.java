@@ -24,8 +24,8 @@ public class PPEUAtomicInteger {
     public PPEUAtomicInteger() {}
 
     /**
-     *  Конструктор с параметром
-     *  @param устанавливает значение для работы
+     *  Конструктор устанавливает значение для работы
+     *  @param value значение
      */
     public PPEUAtomicInteger(int value) {
         this.value = value;

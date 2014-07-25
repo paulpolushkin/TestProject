@@ -24,8 +24,8 @@ public class PPEUAtomicLong {
     public PPEUAtomicLong() {}
 
     /**
-     *  Конструктор с параметром
-     *  @param устанавливает значение для работы
+     *  Конструктор устанавливает значение для работы
+     *  @param value значение
      */
     public PPEUAtomicLong(long value) {
         this.value = value;

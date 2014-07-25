@@ -33,27 +33,28 @@ public class SimpleMessageUncaughtExceptionHandler implements Thread.UncaughtExc
     public SimpleMessageUncaughtExceptionHandler() {}
 
     /**
-     * Конструктор с параметром
-     * @param level устанавливает сколько элементов стека выводить
-     * при выборке сообщений из {@code StackTraceElement}
+     * Конструктор устанавливает сколько элементов стека выводить
+     * при выборке сообщений из {@link StackTraceElement}
+     * @param level количество элементов стека
      */
     public SimpleMessageUncaughtExceptionHandler(int level) {
         this.level = level;
     }
 
     /**
-     * Конструктор с параметром
-     * @param ps устанавливает стрим для вывода сообщений пользователю
+     * Конструктор устанавливает {@link PrintStream} для вывода сообщений пользователю
+     * @param ps объект {@link PrintStream}
      */
     public SimpleMessageUncaughtExceptionHandler(PrintStream ps) {
         this.ps = ps;
     }
 
     /**
-     * Конструктор с параметрами
-     * @param level устанавливает сколько элементов стека выводить
+     * Конструктор устанавливает сколько элементов стека выводить
      * при выборке сообщений из {@code StackTraceElement}
-     * @param ps - устанавливает стрим для вывода сообщений пользователю
+     * также устанавливает {@link PrintStream} для вывода сообщений пользователю
+     * @param level количество элементов стека
+     * @param ps - объект {@link PrintStream}
      */
     public SimpleMessageUncaughtExceptionHandler(int level, PrintStream ps) {
         this.level = level;
@@ -71,8 +72,9 @@ public class SimpleMessageUncaughtExceptionHandler implements Thread.UncaughtExc
     }
 
     /**
+     * Выводит сообщение об ошибке
      * Рекурсивный метод
-     * @param e
+     * @param e исключение по которому необходимо вывести сообщение
      */
     private void getMessage(Throwable e) {
         if(ArrayUtils.isEmpty(e.getStackTrace())) {
@@ -99,6 +101,10 @@ public class SimpleMessageUncaughtExceptionHandler implements Thread.UncaughtExc
         getCause(e);
     }
 
+    /**
+     * Вывести сообщение по исключению-причине текущего исключения
+     * @param e текущее исключение
+     */
     private void getCause(Throwable e) {
         if(e.getCause() != null) {
             ps.print("Cause: ");

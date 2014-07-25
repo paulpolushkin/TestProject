@@ -24,8 +24,8 @@ public class PPEUAtomicBoolean {
     public PPEUAtomicBoolean() {}
 
     /**
-     *  Конструктор с параметром
-     *  @param устанавливает значение для работы
+     *  Конструктор устанавливает значение для работы
+     *  @param value значение
      */
     public PPEUAtomicBoolean(boolean value) {
         this.value = value;

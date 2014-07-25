@@ -24,8 +24,8 @@ public class PPEUAtomicReference<P> {
     public PPEUAtomicReference() {}
 
     /**
-     *  Конструктор с параметром
-     *  @param value устанавливает значение для работы
+     *  Конструктор устанавливает значение для работы
+     *  @param value значение
      */
     public PPEUAtomicReference(P value) {
         this.value = value;
