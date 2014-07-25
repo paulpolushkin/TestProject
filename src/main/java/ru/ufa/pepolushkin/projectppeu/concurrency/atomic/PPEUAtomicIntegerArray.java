@@ -60,10 +60,10 @@ public class PPEUAtomicIntegerArray {
     }
 
     /**
-     * Лениво возвращает объект {@link ArrayModification}
+     * Лениво возвращает объект {@link PPEUAtomicIntegerArray.ArrayModification}
      * для модификации массива
      * Сделаем двойную проверку на null чтобы сборщику мусора не собирать лишние объекты)))
-     * @return объект {@link ArrayModification}
+     * @return объект {@link PPEUAtomicIntegerArray.ArrayModification}
      */
     public ArrayModification getArrayModification() {
         if(mod == null) {

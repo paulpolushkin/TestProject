@@ -23,7 +23,6 @@ public class SimpleMessageUncaughtExceptionHandler implements Thread.UncaughtExc
 
     /**
      * Стрим вывода сообщений
-     * default {@code ps = System.out)
      */
     protected PrintStream ps = System.out;
 
