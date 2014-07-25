@@ -1,5 +1,5 @@
 /*
- * Класс реализует атомарные операции с типом int
+ * Класс реализует атомарные операции с типом long
  */
 
 package ru.ufa.pepolushkin.projectppeu.concurrency.atomic;
@@ -9,25 +9,25 @@ package ru.ufa.pepolushkin.projectppeu.concurrency.atomic;
  * @since 25.07.2014 (1.0)
  * @version 25.07.2014
  */
-public class PPEUAtomicInteger {
+public class PPEUAtomicLong {
 
     /**
-     * Значение типа int, с которым необходимо проводить атомарные операции
+     * Значение типа long, с которым необходимо проводить атомарные операции
      * default {@code value = 0}
      */
-    private volatile int value = 0;
+    private volatile long value = 0;
 
     /**
      *  Конструктор по умолчанию
      *  default {@code value = 0}
      */
-    public PPEUAtomicInteger() {}
+    public PPEUAtomicLong() {}
 
     /**
      *  Конструктор с параметром
      *  @param устанавливает значение для работы
      */
-    public PPEUAtomicInteger(int value) {
+    public PPEUAtomicLong(long value) {
         this.value = value;
     }
 
@@ -35,7 +35,7 @@ public class PPEUAtomicInteger {
      * Возвращает текущее значение атомарно
      * @return текущее значение
      */
-    public int get() {
+    public long get() {
         return value;
     }
 
@@ -43,7 +43,7 @@ public class PPEUAtomicInteger {
      * Устанавливает новое значение атомарно
      * @param value новое значение
      */
-    public void set(int value) {
+    public void set(long value) {
         this.value = value;
     }
 
@@ -51,7 +51,7 @@ public class PPEUAtomicInteger {
      * Добавляет к текущему значению переданное в параметре число
      * @param value число, на которое нужно увеличить текущее значение
      */
-    public synchronized void add(int value) {
+    public synchronized void add(long value) {
         this.value += value;
     }
 
@@ -59,14 +59,14 @@ public class PPEUAtomicInteger {
      * Увеличивает на единицу
      */
     public void increment() {
-        add(1);
+        add(1L);
     }
 
     /**
      * Уменьшает на единицу
      */
     public void decrement() {
-        add(-1);
+        add(-1L);
     }
 
     /**
@@ -74,8 +74,8 @@ public class PPEUAtomicInteger {
      * @param value новое значение
      * @return старое значение
      */
-    public synchronized int getAndSet(int value) {
-        int temp = this.value;
+    public synchronized long getAndSet(long value) {
+        long temp = this.value;
         this.value = value;
         return temp;
     }
@@ -86,7 +86,7 @@ public class PPEUAtomicInteger {
      * @param value число, на которое нужно увеличить текущее значение
      * @return новое значение
      */
-    public synchronized int addAndGet(int value) {
+    public synchronized long addAndGet(long value) {
         this.value += value;
         return this.value;
     }
@@ -97,8 +97,8 @@ public class PPEUAtomicInteger {
      * @param value число, на которое нужно увеличить текущее значение
      * @return старое значение
      */
-    public synchronized int getAndAdd(int value) {
-        int temp = this.value;
+    public synchronized long getAndAdd(long value) {
+        long temp = this.value;
         this.value += value;
         return temp;
     }
@@ -107,7 +107,7 @@ public class PPEUAtomicInteger {
      * Увеличивает на единицу и возвращает то, что получилось
      * @return результат увеличения на единицу
      */
-    public int incrementAndGet() {
+    public long incrementAndGet() {
         return addAndGet(1);
     }
 
@@ -115,7 +115,7 @@ public class PPEUAtomicInteger {
      * Увеличивает на единицу и возвращает старое значение
      * @return Старое значение
      */
-    public int getAndIncrement() {
+    public long getAndIncrement() {
         return getAndAdd(1);
     }
 
@@ -123,7 +123,7 @@ public class PPEUAtomicInteger {
      * Уменьшает на единицу и возвращает то, что получилось
      * @return результат уменьшения на единицу
      */
-    public int decrementAndGet() {
+    public long decrementAndGet() {
         return addAndGet(-1);
     }
 
@@ -131,7 +131,7 @@ public class PPEUAtomicInteger {
      * Уменьшает на единицу и возвращает старое значение
      * @return Старое значение
      */
-    public int addAndDecrement() {
+    public long addAndDecrement() {
         return getAndAdd(-1);
     }
 
