@@ -7,7 +7,7 @@ package ru.ufa.pepolushkin.projectppeu.concurrency.atomic;
 /**
  * @author Pavel Polushkin
  * @since 25.07.2014 (1.0)
- * @version 25.07.2014
+ * @version 26.07.2014
  */
 public class PPEUAtomicIntegerArray {
 
@@ -16,7 +16,7 @@ public class PPEUAtomicIntegerArray {
      */
     private volatile int[] array;
 
-    private ArrayModification mod;
+    private volatile ArrayModification mod;
 
     /**
      *  Конструктор принимает значение размера массива
@@ -32,7 +32,17 @@ public class PPEUAtomicIntegerArray {
      *  @param array массив
      */
     public PPEUAtomicIntegerArray(int[] array) {
-        this.array = array;
+        this.array = array.clone();
+    }
+
+    /**
+     * Проверяет не выходит ли номер элемента массива за пределы последнего
+     * @param i номер элемента массива
+     */
+    private void checkBounds(int i) {
+        if(i < 0 || i >= array.length)
+            throw new IndexOutOfBoundsException("index " + i
+                    + " out of range 0..array.length(" + (array.length - 1) + ")");
     }
 
     /**
@@ -52,18 +62,139 @@ public class PPEUAtomicIntegerArray {
     }
 
     /**
+     * Возвращает текущее значение элемента массива атомарно
+     * @param i номер элемента массива
+     * @return текущее значение элемента массива
+     */
+    public synchronized int get(int i) {
+        checkBounds(i);
+        return array[i];
+    }
+
+    /**
+     * Устанавливает новое значение элемента массива атомарно
+     * @param i номер элемента массива
+     * @param value новое значение
+     */
+    public synchronized void set(int i, int value) {
+        checkBounds(i);
+        array[i] = value;
+    }
+
+    /**
+     * Добавляет к текущему значению элемента массива переданное число
+     * @param i номер элемента массива
+     * @param value число, на которое нужно увеличить текущее значение
+     */
+    public synchronized void add(int i, int value) {
+        checkBounds(i);
+        array[i] += value;
+    }
+
+    /**
+     * Увеличивает значение элемента массива на единицу
+     * @param i номер элемента массива
+     */
+    public void increment(int i) {
+        add(i, 1);
+    }
+
+    /**
+     * Уменьшает значение элемента массива на единицу
+     * @param i номер элемента массива
+     */
+    public void decrement(int i) {
+        add(i, -1);
+    }
+
+    /**
+     * Устанавливает новое значение элемента массива и возвращает старое атомарно
+     * @param i номер элемента массива
+     * @param value новое значение
+     * @return старое значение
+     */
+    public synchronized int getAndSet(int i, int value) {
+        checkBounds(i);
+        int temp = array[i];
+        array[i] = value;
+        return temp;
+    }
+
+    /**
+     * Добавляет к текущему значению элемента массива переданное в параметре число
+     * и возвращает новое значение
+     * @param i номер элемента массива
+     * @param value число, на которое нужно увеличить текущее значение
+     * @return новое значение
+     */
+    public synchronized int addAndGet(int i, int value) {
+        checkBounds(i);
+        array[i] += value;
+        return array[i];
+    }
+
+    /**
+     * Добавляет к текущему значению элемента массива переданное в параметре число
+     * и возвращает сумму
+     * @param i номер элемента массива
+     * @param value число, на которое нужно увеличить текущее значение
+     * @return старое значение
+     */
+    public synchronized int getAndAdd(int i, int value) {
+        checkBounds(i);
+        int temp = array[i];
+        array[i] += value;
+        return temp;
+    }
+
+    /**
+     * Увеличивает значение элемента массива на единицу и возвращает то, что получилось
+     * @param i номер элемента массива
+     * @return результат увеличения на единицу
+     */
+    public int incrementAndGet(int i) {
+        return addAndGet(i,1);
+    }
+
+    /**
+     * Увеличивает значение элемента массива на единицу и возвращает старое значение
+     * @param i номер элемента массива
+     * @return Старое значение
+     */
+    public int getAndIncrement(int i) {
+        return getAndAdd(i,1);
+    }
+
+    /**
+     * Уменьшает значение элемента массива на единицу и возвращает то, что получилось
+     * @param i номер элемента массива
+     * @return результат уменьшения на единицу
+     */
+    public int decrementAndGet(int i) {
+        return addAndGet(i,-1);
+    }
+
+    /**
+     * Уменьшает значение элемента массива на единицу и возвращает старое значение
+     * @param i номер элемента массива
+     * @return Старое значение
+     */
+    public int addAndDecrement(int i) {
+        return getAndAdd(i,-1);
+    }
+
+    /**
      * Внутренний класс для модификации самого массива,
      * а не только его данных
      */
-    class ArrayModification {
+    public class ArrayModification {
 
     }
 
     /**
-     * Лениво возвращает объект {@link PPEUAtomicIntegerArray.ArrayModification}
+     * Лениво возвращает объект {@linkplain PPEUAtomicIntegerArray.ArrayModification}
      * для модификации массива
-     * Сделаем двойную проверку на null чтобы сборщику мусора не собирать лишние объекты)))
-     * @return объект {@link PPEUAtomicIntegerArray.ArrayModification}
+     * @return объект {@linkplain PPEUAtomicIntegerArray.ArrayModification}
      */
     public ArrayModification getArrayModification() {
         if(mod == null) {
