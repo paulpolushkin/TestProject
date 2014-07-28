@@ -21,12 +21,23 @@ public class PPEUAtomicIntegerArray {
     private volatile ArrayModification mod;
 
     /**
+     * Специальное final поле, которое записывается последним в конструкторе,
+     * чтобы объект был "правильно построенным".
+     * Так же необходимо обеспечить зависимость в последовательности вызова оперторов в конструкторе,
+     * чтобы компилятор, JIT или процессор не могли поменять их местами.
+     */
+    private final int built;
+
+    /**
      *  Конструктор принимает значение размера массива
      *  и создает на его основе новый массив
      *  @param size размер массива
      */
     public PPEUAtomicIntegerArray(int size) {
+        if(size < 1)
+            size = 0;
         array = new int[size];
+        built = array.length == 0 ? 0 : array[0];
     }
 
     /**
@@ -34,7 +45,11 @@ public class PPEUAtomicIntegerArray {
      *  @param array массив
      */
     public PPEUAtomicIntegerArray(int[] array) {
-        this.array = array.clone();
+        if(array == null)
+            this.array = new int[0];
+        else
+            this.array = array.clone();
+        built = this.array.length == 0 ? 0 : array[0];
     }
 
     /**
