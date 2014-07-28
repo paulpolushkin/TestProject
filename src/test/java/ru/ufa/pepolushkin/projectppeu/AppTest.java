@@ -1,38 +1,22 @@
 package ru.ufa.pepolushkin.projectppeu;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import ru.ufa.pepolushkin.projectppeu.concurrency.atomic.PPEUAtomicIntegerArrayJUnitTest3;
+import ru.ufa.pepolushkin.projectppeu.concurrency.atomic.PPEUAtomicIntegerArrayJUnitTest4;
+import ru.ufa.pepolushkin.projectppeu.concurrency.atomic.PPEUAtomicReferenceJUnitTest4;
 
 /**
- * Unit test for simple App.
+ * @author Pavel Polushkin
+ * @since 23.07.2014 (1.0)
+ * @version 28.07.2014
  */
-public class AppTest 
-    extends TestCase
+
+@Suite.SuiteClasses( {  PPEUAtomicIntegerArrayJUnitTest3.class,
+                        PPEUAtomicIntegerArrayJUnitTest4.class,
+                        PPEUAtomicReferenceJUnitTest4.class
+                    } )
+@RunWith(Suite.class)
+public class AppTest
 {
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
-    {
-        super( testName );
-    }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
-    }
-
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
-    }
 }
