@@ -2,24 +2,25 @@
  * Тесты для PPEUAtomicReference (JUnit 4)
  */
 
-package ru.ufa.pepolushkin.projectppeu.concurrency.atomic;
+package ru.ufa.pepolushkin.projectppeu.tests.concurrency.atomic;
 
 import org.junit.Before;
 import org.junit.Test;
+import ru.ufa.pepolushkin.projectppeu.concurrency.atomic.PPEUAtomicReference;
 import static org.junit.Assert.*;
 
 /**
  * @author Pavel Polushkin
  * @since 28.07.2014 (1.0)
- * @version 28.07.2014
+ * @version 29.07.2014
  */
-public class PPEUAtomicReferenceJUnitTest4 {
+public class PPEUAtomicReferenceJUnit4Test {
 
     private PPEUAtomicReference<String> ref1;
     private PPEUAtomicReference<String> ref2;
     private PPEUAtomicReference<String> ref3;
 
-    public PPEUAtomicReferenceJUnitTest4() {
+    public PPEUAtomicReferenceJUnit4Test() {
     }
 
     @Before

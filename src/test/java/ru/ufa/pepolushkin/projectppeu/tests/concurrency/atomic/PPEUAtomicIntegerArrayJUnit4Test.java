@@ -2,7 +2,7 @@
  * Тесты для PPEUAtomicIntegerArray (JUnit 4)
  */
 
-package ru.ufa.pepolushkin.projectppeu.concurrency.atomic;
+package ru.ufa.pepolushkin.projectppeu.tests.concurrency.atomic;
 
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -10,13 +10,14 @@ import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import ru.ufa.pepolushkin.projectppeu.concurrency.atomic.PPEUAtomicIntegerArray;
 
 /**
  * @author Pavel Polushkin
  * @since 28.07.2014 (1.0)
- * @version 28.07.2014
+ * @version 29.07.2014
  */
-public class PPEUAtomicIntegerArrayJUnitTest4 {
+public class PPEUAtomicIntegerArrayJUnit4Test {
 
     static int[] array = new int[] {1,2,3,4,5,6,7,8,9,10};
 
@@ -28,7 +29,7 @@ public class PPEUAtomicIntegerArrayJUnitTest4 {
     @Rule
     public final ExpectedException thrown = ExpectedException.none();
 
-    public PPEUAtomicIntegerArrayJUnitTest4() {
+    public PPEUAtomicIntegerArrayJUnit4Test() {
     }
 
     @Before

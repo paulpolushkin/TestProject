@@ -2,17 +2,18 @@
  * Тесты для PPEUAtomicIntegerArray (JUnit 3)
  */
 
-package ru.ufa.pepolushkin.projectppeu.concurrency.atomic;
+package ru.ufa.pepolushkin.projectppeu.tests.concurrency.atomic;
 
 import java.util.Arrays;
 import junit.framework.TestCase;
+import ru.ufa.pepolushkin.projectppeu.concurrency.atomic.PPEUAtomicIntegerArray;
 
 /**
  * @author Pavel Polushkin
  * @since 28.07.2014 (1.0)
- * @version 28.07.2014
+ * @version 29.07.2014
  */
-public class PPEUAtomicIntegerArrayJUnitTest3 extends TestCase {
+public class PPEUAtomicIntegerArrayJUnit3Test extends TestCase {
 
     int[] array = new int[] {1,2,3,4,5,6,7,8,9,10};
 
@@ -21,7 +22,7 @@ public class PPEUAtomicIntegerArrayJUnitTest3 extends TestCase {
 
     PPEUAtomicIntegerArray.ArrayModification mod;
 
-    public PPEUAtomicIntegerArrayJUnitTest3(String testName) {
+    public PPEUAtomicIntegerArrayJUnit3Test(String testName) {
         super(testName);
     }
 
