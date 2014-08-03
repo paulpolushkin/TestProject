@@ -15,7 +15,7 @@ import ru.ufa.pepolushkin.projectppeu.concurrency.atomic.PPEUAtomicIntegerArray;
 /**
  * @author Pavel Polushkin
  * @since 28.07.2014 (1.0)
- * @version 29.07.2014
+ * @version 03.08.2014
  */
 public class PPEUAtomicIntegerArrayJUnit4Test {
 
@@ -23,8 +23,6 @@ public class PPEUAtomicIntegerArrayJUnit4Test {
 
     PPEUAtomicIntegerArray atom1;
     PPEUAtomicIntegerArray atom2;
-
-    static PPEUAtomicIntegerArray.ArrayModification mod;
 
     @Rule
     public final ExpectedException thrown = ExpectedException.none();
@@ -36,7 +34,6 @@ public class PPEUAtomicIntegerArrayJUnit4Test {
     public void setUp() {
         atom1 = new PPEUAtomicIntegerArray(3);
         atom2 = new PPEUAtomicIntegerArray(array);
-        mod = atom2.getArrayModification();
     }
 
     @Test
@@ -48,6 +45,12 @@ public class PPEUAtomicIntegerArrayJUnit4Test {
         assertFalse(atom2.get() == array);
         assertNotSame(atom2.get(), array);
         assertArrayEquals(atom2.get(), array);
+
+        int[] i = new int[]{1,2,3};
+        PPEUAtomicIntegerArray a = new PPEUAtomicIntegerArray(i);
+        assertNotSame(i, a.get());
+        int[] j = a.get();
+        assertNotSame(j, a.get());
     }
 
     @Test
@@ -147,93 +150,9 @@ public class PPEUAtomicIntegerArrayJUnit4Test {
 
     @Test
     public void testGetArrayModification() {
-        assertNotNull(mod);
         assertNotNull(atom2.getArrayModification());
-        assertNotSame(mod, atom1.getArrayModification());
-        assertSame(atom2.getArrayModification(), atom2.getArrayModification());
-    }
-
-    @Test
-    public void testAddToEndElem() {
-        int[] i = atom2.get().clone();
-        mod.add(11);
-        assertTrue(atom2.get(atom2.length()-1) == 11);
-        assertSame(atom2.length(), i.length + 1);
-    }
-
-    @Test
-    public void testAddAllToEndElems() {
-        int[] i = atom2.get().clone();
-        int[] j = new int[]{22,33,44};
-        mod.addAll(j);
-        assertTrue(atom2.get(atom2.length()-1) == 44);
-        assertTrue(atom2.get(atom2.length()-2) == 33);
-        assertTrue(atom2.get(atom2.length()-3) == 22);
-        assertSame(atom2.length(), i.length + j.length);
-        int[] k = new int[3];
-        System.arraycopy(atom2.get(), i.length, k, 0, j.length);
-        assertArrayEquals(j, k);
-    }
-
-    @Test
-    public void testAddElem() {
-        int[] i = atom2.get().clone();
-        int ii = atom2.get(1);
-        mod.add(1,12);
-        assertTrue(atom2.get(1) == 12);
-        assertSame(atom2.length(), i.length + 1);
-        assertSame(atom2.get(2), ii);
-    }
-
-    @Test
-    public void testAddAllElems() {
-        int[] i = atom2.get().clone();
-        int[] j = new int[]{77,88};
-        int ii = atom2.get(2);
-        mod.addAll(2,j);
-        assertTrue(atom2.get(2) == 77);
-        assertTrue(atom2.get(3) == 88);
-        assertTrue(atom2.get(4) == ii);
-        assertSame(atom2.length(), i.length + j.length);
-        int[] k = new int[2];
-        System.arraycopy(atom2.get(), 2, k, 0, j.length);
-        assertArrayEquals(j, k);
-    }
-
-    @Test
-    public void testRemoveFromEndElem() {
-        int[] i = atom2.get().clone();
-        int ii = atom2.get(atom2.length() - 2);
-        mod.remove();
-        assertTrue(atom2.get(atom2.length()-1) == ii);
-        assertSame(atom2.length(), i.length - 1);
-    }
-
-    @Test
-    public void testRemoveAllFromEndElems() {
-        int[] i = atom2.get().clone();
-        int[] j = new int[]{22,33,44};
-        mod.removeAll(2);
-        assertSame(atom2.length(), 2);
-    }
-
-    @Test
-    public void testRemoveElem() {
-        int[] i = atom2.get().clone();
-        int ii = atom2.get(1);
-        mod.remove(0);
-        assertTrue(atom2.get(0) == ii);
-        assertSame(atom2.length(), i.length - 1);
-    }
-
-    @Test
-    public void testRemoveAllElems() {
-        int[] i = atom2.get().clone();
-        int[] j = new int[]{77,88};
-        int ii = atom2.get(4);
-        mod.removeAll(2, j.length);
-        assertTrue(atom2.get(2) == ii);
-        assertSame(atom2.length(), i.length - j.length);
+        assertNotSame(array, atom1.getArrayModification());
+        assertNotSame(atom2.getArrayModification(), atom2.getArrayModification());
     }
 
     @Ignore

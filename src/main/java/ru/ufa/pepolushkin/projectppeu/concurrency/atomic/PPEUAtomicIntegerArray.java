@@ -4,29 +4,19 @@
 
 package ru.ufa.pepolushkin.projectppeu.concurrency.atomic;
 
-import java.util.Arrays;
+import ru.ufa.pepolushkin.projectppeu.concurrency.ArrayModification;
 
 /**
  * @author Pavel Polushkin
  * @since 25.07.2014 (1.0)
- * @version 27.07.2014
+ * @version 03.08.2014
  */
 public class PPEUAtomicIntegerArray {
 
     /**
      * Массив типа int, с которым необходимо проводить атомарные операции
      */
-    private volatile int[] array;
-
-    private volatile ArrayModification mod;
-
-    /**
-     * Специальное final поле, которое записывается последним в конструкторе,
-     * чтобы объект был "правильно построенным".
-     * Так же необходимо обеспечить зависимость в последовательности вызова оперторов в конструкторе,
-     * чтобы компилятор, JIT или процессор не могли поменять их местами.
-     */
-    private final int built;
+    private final int[] array;
 
     /**
      *  Конструктор принимает значение размера массива
@@ -37,7 +27,6 @@ public class PPEUAtomicIntegerArray {
         if(size < 1)
             size = 0;
         array = new int[size];
-        built = array.length == 0 ? 0 : array[0];
     }
 
     /**
@@ -49,7 +38,6 @@ public class PPEUAtomicIntegerArray {
             this.array = new int[0];
         else
             this.array = array.clone();
-        built = this.array.length == 0 ? 0 : array[0];
     }
 
     /**
@@ -67,7 +55,7 @@ public class PPEUAtomicIntegerArray {
      * @return текущий массив
      */
     public int[] get() {
-        return array;
+        return array.clone();
     }
 
     /**
@@ -201,109 +189,13 @@ public class PPEUAtomicIntegerArray {
     }
 
     /**
-     * Внутренний класс для модификации самого массива
-     */
-    public class ArrayModification {
-
-        /**
-         * Добавляет элемент в конец массива
-         * @param value элемент для добавления
-         */
-        public void add(int value) {
-            synchronized(PPEUAtomicIntegerArray.this) {
-                array = Arrays.copyOf(array, array.length + 1);
-                array[array.length - 1] = value;
-            }
-        }
-
-        /**
-         * Добавляет элементы в конец массива
-         * @param values элементы для добавления
-         */
-        public void addAll(int[] values) {
-            synchronized(PPEUAtomicIntegerArray.this) {
-                int oldLenght = array.length;
-                array = Arrays.copyOf(array, array.length + values.length);
-                System.arraycopy(values, 0, array, oldLenght, values.length);
-            }
-        }
-
-        /**
-         * Добавляет элемент в определенное место массива
-         * @param elem номер нового элемента массива
-         * @param value элемент для добавления
-         */
-        public void add(int elem, int value) {
-            addAll(elem, new int[]{value});
-        }
-
-        /**
-         * Добавляет элементы в определенное место массива
-         * @param elem номер нового элемента массива
-         * @param values элементы для добавления
-         */
-        public void addAll(int elem, int[] values) {
-            synchronized(PPEUAtomicIntegerArray.this) {
-                int oldLenght = array.length;
-                array = Arrays.copyOf(array, array.length + values.length);
-                System.arraycopy(array, elem, array, elem + values.length, oldLenght - elem);
-                System.arraycopy(values, 0, array, elem, values.length);
-            }
-        }
-
-        /**
-         * Удаляет элемент из конца массива
-         */
-        public void remove() {
-            removeAll(array.length - 1);
-        }
-
-        /**
-         * Удаляет элемент из указанной позиции массива
-         * @param i позиция элемента для удаления
-         */
-        public void remove(int i) {
-            removeAll(i, 1);
-        }
-
-        /**
-         * Удаляет все элементы до конца массива начиная с указанного
-         * @param begin номер элемента с которого следует начать удаление
-         */
-        public void removeAll(int begin) {
-            synchronized(PPEUAtomicIntegerArray.this) {
-                array = Arrays.copyOf(array, begin);
-            }
-        }
-
-        /**
-         * Удаляет некоторое количество элеменов массива начиная с указанного
-         * @param begin номер элемента с которого следует начать удаление
-         * @param count количество элементов для удаления
-         */
-        public void removeAll(int begin, int count) {
-            synchronized(PPEUAtomicIntegerArray.this) {
-                System.arraycopy(array, begin + count, array, begin, array.length - begin - count);
-                array = Arrays.copyOf(array, array.length - count);
-            }
-        }
-
-    }
-
-    /**
      * Лениво возвращает объект {@linkplain PPEUAtomicIntegerArray.ArrayModification}
      * для модификации массива
      * @return объект {@linkplain PPEUAtomicIntegerArray.ArrayModification}
      */
     public ArrayModification getArrayModification() {
-        if(mod == null) {
-            synchronized(this) {
-                if(mod == null) {
-                    mod = new ArrayModification();
-                }
-            }
-        }
-        return mod;
+        int[] temp = get();
+        return new ArrayModification(temp);
     }
 
 }
