@@ -5,12 +5,11 @@
 package ru.ufa.pepolushkin.projectppeu.common;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Pavel Polushkin
  * @since 04.08.2014 (1.0)
- * @version 04.08.2014
+ * @version 10.08.2014
  */
 public class ExtendedClone extends StandartClone {
 
